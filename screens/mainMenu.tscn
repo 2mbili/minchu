@@ -1,0 +1,315 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://assets/fnt.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/playbtn.png" type="Texture" id=2]
+[ext_resource path="res://screens/mainMenu.gd" type="Script" id=3]
+[ext_resource path="res://assets/play.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/playbtnpressed.png" type="Texture" id=5]
+[ext_resource path="res://assets/gameicons/trophy.png" type="Texture" id=6]
+[ext_resource path="res://assets/gameicons/gear.png" type="Texture" id=7]
+[ext_resource path="res://assets/gameicons/movie.png" type="Texture" id=8]
+[ext_resource path="res://screens/mainmenuControl.gd" type="Script" id=9]
+[ext_resource path="res://assets/font/default.tres" type="DynamicFont" id=10]
+[ext_resource path="res://assets/woosh.wav" type="AudioStream" id=11]
+
+[sub_resource type="ParticlesMaterial" id=5]
+emission_shape = 2
+emission_box_extents = Vector3( 360, 1, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, -98, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 0.5
+angular_velocity = 100.0
+angular_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 40.0
+scale_random = 0.5
+color = Color( 0.18885, 0.217773, 0.217773, 1 )
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/menuParent/main/VBoxContainer/Label:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "appear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/menuParent/main/VBoxContainer/Label:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1000 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="DynamicFont" id=1]
+size = 200
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 25
+font_data = ExtResource( 1 )
+
+[node name="mainMenu" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="show" type="Particles2D" parent="."]
+position = Vector2( 328, 1370 )
+amount = 20
+lifetime = 10.0
+process_material = SubResource( 5 )
+
+[node name="animplayer" type="AnimationPlayer" parent="."]
+autoplay = "appear"
+anims/RESET = SubResource( 2 )
+anims/appear = SubResource( 3 )
+
+[node name="woosh" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+
+[node name="audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="menuParent" type="Control" parent="ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 9 )
+
+[node name="Tween" type="Tween" parent="ui/menuParent"]
+
+[node name="settings" type="CenterContainer" parent="ui/menuParent"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = 1288.0
+margin_right = 7.0
+margin_bottom = 1288.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/menuParent/settings"]
+margin_left = 267.0
+margin_top = 544.0
+margin_right = 453.0
+margin_bottom = 735.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/menuParent/settings/VBoxContainer"]
+margin_right = 186.0
+margin_bottom = 61.0
+
+[node name="Label" type="Label" parent="ui/menuParent/settings/VBoxContainer/HBoxContainer"]
+margin_top = 4.0
+margin_right = 101.0
+margin_bottom = 57.0
+custom_fonts/font = ExtResource( 10 )
+text = "SPEED"
+
+[node name="subtract" type="ToolButton" parent="ui/menuParent/settings/VBoxContainer/HBoxContainer"]
+margin_left = 105.0
+margin_right = 131.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 10 )
+text = "-"
+
+[node name="Label2" type="Label" parent="ui/menuParent/settings/VBoxContainer/HBoxContainer"]
+margin_left = 135.0
+margin_top = 4.0
+margin_right = 156.0
+margin_bottom = 57.0
+custom_fonts/font = ExtResource( 10 )
+text = "5"
+
+[node name="add" type="ToolButton" parent="ui/menuParent/settings/VBoxContainer/HBoxContainer"]
+margin_left = 160.0
+margin_right = 186.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 10 )
+text = "-"
+
+[node name="CheckButton" type="CheckButton" parent="ui/menuParent/settings/VBoxContainer"]
+margin_top = 65.0
+margin_right = 186.0
+margin_bottom = 126.0
+custom_fonts/font = ExtResource( 10 )
+text = "SOUND"
+flat = true
+align = 1
+icon_align = 1
+
+[node name="backButton" type="ToolButton" parent="ui/menuParent/settings/VBoxContainer"]
+margin_top = 130.0
+margin_right = 186.0
+margin_bottom = 191.0
+custom_fonts/font = ExtResource( 10 )
+text = "BACK"
+
+[node name="highscore" type="CenterContainer" parent="ui/menuParent"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = 2574.0
+margin_right = 7.0
+margin_bottom = 2574.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/menuParent/highscore"]
+margin_left = 225.0
+margin_top = 581.0
+margin_right = 495.0
+margin_bottom = 699.0
+
+[node name="Label" type="Label" parent="ui/menuParent/highscore/VBoxContainer"]
+margin_right = 270.0
+margin_bottom = 53.0
+custom_fonts/font = ExtResource( 10 )
+text = "HIGHSCORE LIST"
+
+[node name="backButton" type="ToolButton" parent="ui/menuParent/highscore/VBoxContainer"]
+margin_top = 57.0
+margin_right = 270.0
+margin_bottom = 118.0
+custom_fonts/font = ExtResource( 10 )
+text = "BACK"
+
+[node name="main" type="MarginContainer" parent="ui/menuParent"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = 4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/menuParent/main"]
+margin_right = 720.0
+margin_bottom = 1280.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 15
+size_flags_vertical = 15
+alignment = 2
+
+[node name="Label" type="Label" parent="ui/menuParent/main/VBoxContainer"]
+margin_right = 720.0
+margin_bottom = 424.0
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 1 )
+text = "MINCHU"
+align = 1
+valign = 2
+
+[node name="touch" type="TextureButton" parent="ui/menuParent/main/VBoxContainer"]
+margin_top = 428.0
+margin_right = 720.0
+margin_bottom = 852.0
+size_flags_vertical = 7
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 5 )
+expand = true
+stretch_mode = 3
+script = ExtResource( 9 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui/menuParent/main/VBoxContainer"]
+margin_top = 856.0
+margin_right = 720.0
+margin_bottom = 1280.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ui/menuParent/main/VBoxContainer/VBoxContainer"]
+margin_top = 146.0
+margin_right = 720.0
+margin_bottom = 246.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 100, 100 )
+alignment = 1
+
+[node name="highscore" type="TextureButton" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 237.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 6 )
+expand = true
+stretch_mode = 3
+
+[node name="noads" type="TextureButton" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 241.0
+margin_right = 478.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 8 )
+expand = true
+stretch_mode = 3
+
+[node name="settings" type="TextureButton" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 482.0
+margin_right = 720.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ui/menuParent/main/VBoxContainer/VBoxContainer"]
+margin_top = 250.0
+margin_right = 720.0
+margin_bottom = 277.0
+alignment = 1
+
+[node name="highscore" type="Label" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 237.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
+text = "High Score"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+
+[node name="highscore2" type="Label" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 241.0
+margin_right = 478.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
+text = "Remove ADS"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+
+[node name="highscore3" type="Label" parent="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 482.0
+margin_right = 720.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
+text = "SETTINGS"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+
+[connection signal="pressed" from="ui/menuParent/settings/VBoxContainer/backButton" to="ui/menuParent" method="_on_backButton_pressed"]
+[connection signal="pressed" from="ui/menuParent/highscore/VBoxContainer/backButton" to="ui/menuParent" method="_on_backButton_pressed"]
+[connection signal="button_up" from="ui/menuParent/main/VBoxContainer/touch" to="." method="_on_touch_button_up"]
+[connection signal="pressed" from="ui/menuParent/main/VBoxContainer/touch" to="." method="_on_touch_pressed"]
+[connection signal="pressed" from="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer/highscore" to="ui/menuParent" method="_on_highscore_pressed"]
+[connection signal="pressed" from="ui/menuParent/main/VBoxContainer/VBoxContainer/HBoxContainer/settings" to="ui/menuParent" method="_on_settings_pressed"]

@@ -1,0 +1,191 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://objects/playerHolder.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/game.gd" type="Script" id=3]
+[ext_resource path="res://assets/fnt.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://screens/gameOver.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/play.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/hit.ogg" type="AudioStream" id=7]
+[ext_resource path="res://assets/eat.ogg" type="AudioStream" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 250
+font_data = ExtResource( 4 )
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 250 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "change"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 4.75683 ),
+"update": 0,
+"values": [ 250, 1 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "changeA"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1, 300, 250 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/gameOver:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1280 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ui/gameOn:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "gameOver"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("ui/gameOver:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1280 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ui/gameOn:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 1280 ) ]
+}
+
+[node name="game" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="playerHolder" parent="." instance=ExtResource( 1 )]
+position = Vector2( 365, 871 )
+backColor = Color( 0.112289, 0.128906, 0.128906, 1 )
+width = 300.0
+height = 20.0
+
+[node name="enemyHolder" type="Node2D" parent="."]
+
+[node name="player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 370, 871 )
+
+[node name="enemySpawner" type="Timer" parent="."]
+wait_time = 0.6
+
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="ui" type="Control" parent="ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="gameOn" type="VBoxContainer" parent="ui/ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 2
+
+[node name="c" type="CenterContainer" parent="ui/ui/gameOn"]
+margin_top = 1018.0
+margin_right = 720.0
+margin_bottom = 1280.0
+
+[node name="score" type="Label" parent="ui/ui/gameOn/c"]
+modulate = Color( 0.112289, 0.128906, 0.128906, 1 )
+margin_left = 223.0
+margin_right = 496.0
+margin_bottom = 262.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 1 )
+text = "130"
+align = 1
+valign = 1
+
+[node name="fontChange" type="AnimationPlayer" parent="ui/ui/gameOn/c/score"]
+anims/RESET = SubResource( 2 )
+anims/change = SubResource( 3 )
+anims/changeA = SubResource( 4 )
+
+[node name="gameOver" parent="ui/ui" instance=ExtResource( 5 )]
+
+[node name="uianim" type="AnimationPlayer" parent="ui"]
+anims/RESET = SubResource( 5 )
+anims/gameOver = SubResource( 6 )
+
+[node name="hit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+
+[node name="eat" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+
+[node name="die" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+
+[connection signal="area_entered" from="player" to="." method="_on_player_hit"]
+[connection signal="timeout" from="enemySpawner" to="." method="_on_enemySpawner_timeout"]
+[connection signal="animation_finished" from="ui/ui/gameOn/c/score/fontChange" to="." method="_on_fontChange_animation_finished"]
+[connection signal="pressed" from="ui/ui/gameOver/c/retry/home" to="." method="_on_home_pressed"]
+[connection signal="button_down" from="ui/ui/gameOver/c/retry/score" to="." method="_on_retry"]
+
+[editable path="ui/ui/gameOver"]
